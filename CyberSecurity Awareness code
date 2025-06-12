@@ -1,0 +1,165 @@
+ # # 🔐 Cybersecurity Awareness Chatbot with Quiz and NLP
+# This project includes a basic chatbot for cybersecurity awareness, a smart NLP response system, and a cybersecurity quiz to test user knowledge. It also includes data visualization of threat awareness.
+
+!pip install nltk matplotlib seaborn
+
+import random
+
+import nltk
+
+import matplotlib.pyplot as plt
+
+import seaborn as sns
+
+import pandas as pd
+
+from nltk.tokenize import word_tokenize
+
+nltk.download('punkt')
+# ## 🧠 Cybersecurity Knowledge Base
+
+qa_data = {
+
+    "phishing": "Phishing is when attackers send fake emails or messages to steal personal info. Never click suspicious links.",
+
+    "malware": "Malware is harmful software. Avoid downloading attachments from unknown sources.",
+
+    "password": "Use strong, unique passwords and enable 2FA (two-factor authentication).",
+
+    "social media": "Avoid sharing personal info like birth date, phone number publicly.",
+
+    "public wifi": "Avoid using public Wi-Fi for financial transactions. Use VPN if needed."
+
+}
+
+def smart_chatbot():
+
+    print("🔐 Welcome to the Cybersecurity Awareness Chatbot!")
+
+    print("Type 'exit' to end the chat.\n")
+
+    while True:
+
+        user_input = input("You: ").lower()
+
+        if user_input == "exit":
+
+            print("Bot: Stay safe online! 🛡️")
+
+            break
+
+        tokens = word_tokenize(user_input)
+
+        matched = False
+
+        for keyword in qa_data:
+
+            if any(word in keyword for word in tokens):
+
+                print("Bot:", qa_data[keyword])
+
+                matched = True
+
+                break
+
+        if not matched:
+
+            print("Bot: Sorry, I couldn't understand that. Try asking about phishing, malware, or public wifi.")
+
+# To start the chatbot:
+
+# smart_chatbot()
+
+quiz_questions = [
+
+    {
+
+        "question": "What should you do if you receive a suspicious email?",
+
+        "options": ["Click the link", "Reply to sender", "Ignore or report it"],
+
+        "answer": "Ignore or report it"
+
+    },
+
+    {
+
+        "question": "What is the safest way to use public Wi-Fi?",
+
+        "options": ["Access bank accounts", "Use VPN", "Share passwords"],
+
+        "answer": "Use VPN"
+
+    },
+
+    {
+
+        "question": "What is malware?",
+
+        "options": ["A game", "A type of antivirus", "Harmful software"],
+
+        "answer": "Harmful software"
+
+    }
+
+]
+
+
+
+def run_quiz():
+
+    print("📋 Cybersecurity Awareness Quiz\n")
+
+    score = 0
+
+    for q in quiz_questions:
+
+        print(q["question"])
+
+        for i, option in enumerate(q["options"], 1):
+
+            print(f"{i}. {option}")
+
+        ans = input("Your answer (1/2/3): ")
+
+        if q["options"][int(ans)-1] == q["answer"]:
+
+            print("✅ Correct!\n")
+
+            score += 1
+
+        else:
+
+            print(f"❌ Wrong! Correct answer: {q['answer']}\n")
+
+    print(f"Your final score: {score}/{len(quiz_questions)}")
+
+# To run the quiz:
+
+# run_quiz()
+
+data = {
+
+    "Threat Type": ["Phishing", "Malware", "Password Safety", "Social Media Safety", "Public WiFi"],
+
+    "Unaware Users (%)": [70, 60, 45, 55, 75]
+
+}
+
+df = pd.DataFrame(data)
+
+
+
+plt.figure(figsize=(8,5))
+
+sns.barplot(x="Threat Type", y="Unaware Users (%)", data=df, palette="Reds_r")
+
+plt.title("🧑‍💻 User Awareness on Cybersecurity Threats")
+
+plt.xticks(rotation=20)
+
+plt.tight_layout()
+
+plt.show()
+
+
